@@ -1,0 +1,27 @@
+<?php
+
+    $allTasks = $this->allTasks;
+
+    if (isset($allTasks)) : ?>
+
+        <div class="w-3/4 mx-auto">
+
+            <div class="min-w-full">
+
+                <?php 
+                    foreach ($allTasks as $task){
+                        // Not used code
+                        //$shortenedText = isset($task['task_details']) ? substr($task['task_details'], 0, 20) : '';
+                        include "taskListContent.phtml";
+                    } 
+                ?>
+
+                <?php else : ?>
+                    <p>No tasks to show</p>
+                <?php endif; ?>
+            
+            </div>
+            
+        </div>
+
+

@@ -1,0 +1,47 @@
+<?php
+    $days = floor((strtotime($task['task_deadline'])-strtotime(date('Y-m-d')))/(60*60*24));
+    $message="";
+
+    if ($days<1) {
+        $message = "Time to deadline is over";
+        $trafficClass = "warning";
+    }
+    else if ($days<30) {
+        $message = "$days days remaining to deadline";
+        $trafficClass = "trafficRed";
+    }
+    else if ($days<60) {
+        $message = "$days days remaining to deadline";
+        $trafficClass = "trafficYellow";
+    }
+    else{
+        $message = "$days days remaining to deadline";
+        $trafficClass = "trafficGreen";
+    }
+?>
+<div class="cursor-pointer flex justify-evenly text-gray-700 rounded-md p-4 mb-4 <?php echo strtolower(str_replace(" ", "", $task['task_status']))?> hover:scale-110 hover:text-gray-100 hover:shadow-2xl hover:brightness-130 transition-all duration-300">
+
+    <div class="flex flex-col items-center justify-center">
+        <div class="<?php echo $trafficClass?> signal"></div>
+    </div>
+
+    <div class="flex flex-col" onclick="toggleModal('task-<?php echo $task['task_id']; ?>')">
+        <h2 class="font-bold text-lg text-white"><?php echo strtoupper($task['task_name'])?></h2>
+        <p>This task has been <b>created by <?php echo ($task['task_created_by'])?></b> and <b>assigned to <?php echo ($task['task_assigned_to'])?>.</b> </p>
+        <p>The task is <b>scheduled to start on <?php echo ($task['task_creation_date'])?></b>, and the <b>deadline for completion is <?php echo ($task['task_deadline'])?>.</b></p>
+        <p>The <b>status</b> of this task is <b><?php echo strtoupper(($task['task_status']))?></b></p>
+        <p><?php echo $message?></p>
+    </div>
+    
+    <div class="flex flex-col justify-evenly items-center">
+        <div class="text-white text-2xl scale-200 ml-5 hover:text-gray-500 mb-2"><a href="<?php echo WEB_ROOT . "/getupdateform/" . $task['task_id']; ?>"><img title="Edit task" src="http://<?php echo $_SERVER['HTTP_HOST']."/".WEB_ROOT?>/images/update.png" class="w-12 h-12 opacity-60 hover:opacity-100"></a></div>
+        <div class="text-white text-2xl scale-200 ml-5 hover:text-gray-500 mt-1"><a href="<?php echo WEB_ROOT . "/getViewPreDelete/" . $task['task_id']; ?>"><img title="Delete task" src="http://<?php echo $_SERVER['HTTP_HOST']."/".WEB_ROOT?>/images/papelera.png" class="w-8 h-8 opacity-60 hover:opacity-100"></a></div>
+    </div>
+
+</div>
+
+<!-- Modal  -->
+<div id="task-<?php echo $task['task_id']; ?>" class="modal hidden fixed inset-0 overflow-y-auto z-50">
+    <?php include('modalShowOneTask.php'); ?>
+</div>
+<!-- End of modal-->
